@@ -1,0 +1,10 @@
+# Public repo: only the site ships. Internal docs, client source material and
+# tool state stay local.
+.impeccable/
+ONE PAGE - GOOSE CREEK DECK.md
+DESIGN.md
+DESIGN-TOKENS.md
+PRODUCT.md
+Ativo *.png
+images/*.json
+images/CREDITS.md

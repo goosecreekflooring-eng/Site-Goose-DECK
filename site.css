@@ -1,0 +1,1923 @@
+/* ==========================================================================
+   Goose Creek Deck — one page
+   Built on tokens.css. Palette, family and logo are pinned; this file adds
+   page-scale type steps and the composition.
+   ========================================================================== */
+
+:root {
+  /* Type steps that extend the pinned scale upward for display use */
+  --fs-h2:      clamp(1.85rem, 3.4vw, 2.8rem);
+  --fs-title:   clamp(1.25rem, 2vw, 1.75rem);
+  --fs-lead:    clamp(1.0625rem, 1.4vw, 1.25rem);
+  --fs-base:    1.0625rem;
+
+  /* Tints derived from the navy so secondary text is never gray */
+  --on-navy:      #FFFFFF;
+  --on-navy-dim:  #A9C0CC;
+  --on-navy-line: rgba(169, 192, 204, .24);
+  --accent-soft:  #7FD3A0;
+
+  /* The pinned CTA green #1E8B4A gives white 4.3:1 — legal only above 18.7px
+     bold. Darkened ~5% (indistinguishable at a glance) it clears 4.5:1 at any
+     label size, which is the remedy DESIGN-TOKENS.md already called for.
+     #1E8B4A stays the brand green everywhere it is not carrying white text. */
+  --cta-green: #1C8446;
+
+  --shell:     1200px;
+  --shell-wide: 1242px;   /* the incumbent header/contact-bar width */
+  --shell-pad: clamp(1.125rem, 4vw, 2rem);
+  --band-py:   clamp(4rem, 8.5vw, 7.5rem);
+
+  --hair: 1px solid rgba(39, 39, 39, .14);
+
+  /* Wood grain shared by the deck boards (Why us) and the About montage */
+  --wood-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='160'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.003 .2' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.75 .48'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+}
+
+/* ---------- reset-ish ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }  /* sticky masthead */
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--gc-ink);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+h1, h2, h3, .h1, .h2, .h3 { margin: 0; text-wrap: balance; letter-spacing: -0.025em; text-transform: capitalize; }
+h4, h5, h6, .h4 { text-transform: capitalize; }
+p { margin: 0 0 1.1em; }
+p:last-child { margin-bottom: 0; }
+
+/* ---------- browser surfaces ---------- */
+::selection { background: var(--cta-green); color: #fff; }
+html { caret-color: var(--gc-green-deep); accent-color: var(--gc-green-deep); }
+
+:focus-visible {
+  outline: 3px solid var(--gc-green);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+* { scrollbar-width: thin; scrollbar-color: var(--gc-green-deep) #E4E9EB; }
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: #E4E9EB; }
+::-webkit-scrollbar-thumb { background: var(--gc-green-deep); border-radius: 99px; border: 3px solid #E4E9EB; }
+::-webkit-scrollbar-thumb:hover { background: var(--gc-green); }
+
+a { color: var(--cta-green); text-underline-offset: 3px; text-decoration-thickness: 2px; }
+
+/* Parked above the fold rather than off to the left, so it never widens the
+   document and the page needs no overflow clipping to hide it. */
+.skip {
+  position: absolute; left: 1rem; top: -4rem; z-index: 200;
+  background: var(--cta-green); color: #fff;
+  padding: .8rem 1.2rem; font-weight: 700; text-decoration: none;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+.skip:focus { top: 0; }
+
+/* ---------- layout primitives ---------- */
+.shell { width: 100%; max-width: var(--shell); margin-inline: auto; padding-inline: var(--shell-pad); }
+.shell--wide { max-width: var(--shell-wide); }
+
+.band { padding-block: var(--band-py); }
+.band--plain { background: #fff; }
+.band--soft  { background: var(--gc-surface); }
+.band--mint  { background: var(--gc-surface-green); }
+
+/* ---------- type ---------- */
+.h2 {
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: 1.08;
+  color: var(--gc-navy);
+  max-width: 19ch;
+}
+.h2--on-color { color: #fff; }
+
+/* Kicker: the short green label above a section title, in the client's style
+   (as on goosecreekflooring.com). One class for the whole page. */
+.kicker {
+  margin: 0 0 .6rem;
+  color: var(--cta-green);
+  font-family: var(--font-sans);
+  font-size: clamp(.9rem, 1.1vw, 1rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+/* max-width: none beats `.band p { max-width: 66ch }`, which otherwise
+   centres the label inside a left-hand box instead of across the section */
+p.kicker--center, .band p.kicker--center { text-align: center; max-width: none; margin-inline: auto; }
+.kicker--light { color: #BDEFD1; }   /* on the green card and the navy band */
+
+.lead { font-size: var(--fs-lead); line-height: 1.55; max-width: 46ch; }
+.lead--on-color { color: #fff; font-weight: 600; }
+.lead--on-navy  { color: var(--on-navy-dim); font-weight: 500; }
+
+.band p { max-width: 66ch; }
+
+/* ---------- icons ---------- */
+/* One stroke weight across the whole page. Where an icon needs more presence
+   it gets bigger, not heavier. */
+.ico {
+  width: 1.15em; height: 1.15em; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.75;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ---------- ruled text action ----------
+   The mid-page CTAs. Saturated green is reserved for the three real decision
+   points (hero, CTA break, form); these repeat the same offer four more times
+   and would otherwise read as one button stamped down a differentiated page.
+   Built from the hairline the rest of the page is structured with. */
+.act {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: 1rem; font-weight: 700;
+  letter-spacing: .01em; text-transform: uppercase;
+  color: var(--gc-navy); fill: var(--gc-navy);
+  text-decoration: none;
+  padding-bottom: .45rem;
+  border-bottom: 2px solid var(--cta-green);
+  transition: color .25s, border-color .25s, gap .25s;
+}
+.act:hover, .act:focus-visible {
+  color: var(--cta-green); fill: var(--cta-green);
+  gap: 1rem;
+}
+.act .ico { width: 1.05em; height: 1.05em; }
+
+/* ---------- buttons ---------- */
+/* 19px/700 is the pinned button token, and it is a floor rather than a
+   starting point: on phones the padding shrinks and the type does not.
+   The fill is --cta-green (#1C8446, 4.73:1 with white at any size), so the
+   size is no longer what makes the label legal — but the floor stays, because
+   it is the pinned token and because .btn--sm below still has to drop the
+   green fill rather than put a small label on a green ground. */
+.btn {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-family: var(--font-sans);
+  font-size: 1.1875rem; font-weight: 700;
+  letter-spacing: .01em; text-transform: uppercase;
+  text-decoration: none;
+  color: #fff; fill: #fff;
+  background: var(--cta-green);
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  padding: .95rem 1.7rem;
+  cursor: pointer;
+  transition: background-color .3s, color .3s, box-shadow .35s,
+              transform .35s cubic-bezier(.34, 1.56, .64, 1);
+  box-shadow: 0 6px 18px -8px rgba(0, 0, 0, .45);
+}
+/* Hover grows the button and deepens the green, so the label stays white.
+   (The brand's light hover green #0BB751 only gives white 2.6:1; #156B38
+   gives it about 6.4:1.) */
+.btn:hover, .btn:focus-visible {
+  background: #156B38;
+  color: #fff; fill: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 16px 32px -12px rgba(21, 107, 56, .65);
+}
+.btn .ico { transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.btn:hover .ico { transform: translateX(3px); }
+.btn:active { transform: scale(.98); }
+.btn .ico { width: 1.2em; height: 1.2em; }
+
+.btn--lg { font-size: 1.25rem; padding: 1.1rem 2.05rem; }
+
+/* Header button: the incumbent's green pill with its ↗. A .92rem label is
+   only legal here because the fill is --cta-green (4.73:1 at any size) — on
+   the pinned #1E8B4A it would fail. min-height keeps it a 44px target. */
+.btn--sm {
+  font-size: .92rem; padding: .72rem 1.4rem;
+  min-height: 44px;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px -10px rgba(0, 0, 0, .5);
+}
+.btn--sm .ico { width: 1.05em; height: 1.05em; }
+.lbl-short { display: none; }
+
+.btn--navy { background: var(--gc-navy); }
+.btn--navy:hover, .btn--navy:focus-visible {
+  background: #0D3D55;
+  color: #fff; fill: #fff;   /* must not inherit .btn:hover's navy label */
+}
+
+.btn--outline {
+  background: transparent; color: var(--gc-navy); fill: var(--gc-navy);
+  border-color: rgba(9, 44, 61, .3); box-shadow: none;
+}
+.btn--outline:hover, .btn--outline:focus-visible {
+  background: var(--gc-navy); color: #fff; fill: #fff; border-color: var(--gc-navy);
+}
+
+/* ---------- phone link ---------- */
+.telno {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-weight: 600; color: var(--gc-navy); text-decoration: none;
+  transition: color .2s;
+}
+.telno:hover { color: var(--gc-green-deep); }
+.telno--lg { font-size: 1.15rem; }
+.telno--on-navy { color: #fff; }
+.telno--on-navy:hover { color: var(--accent-soft); }
+
+/* ==========================================================================
+   CONTACT BAR
+   The incumbent site runs a green gradient strip of contact facts above the
+   header. Its brand gradient is #0BB751 → #1E8B4A, which cannot carry white
+   text (2.66:1 at the light end). This one runs the same light-to-dark green
+   move inside the legal range — 4.73:1 at the left, 6.59:1 at the right — so
+   the shape survives and the text is readable.
+   ========================================================================== */
+.topbar {
+  background: linear-gradient(90deg, var(--cta-green) 0%, #146B37 100%);
+  color: #fff;
+}
+.topbar__in {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem 2rem; flex-wrap: wrap;
+  min-height: 48px;
+  padding-block: .55rem;
+}
+.topbar__item {
+  display: inline-flex; align-items: center; gap: .55rem;
+  margin: 0; color: #fff; text-decoration: none;
+  font-size: .95rem; font-weight: 500; line-height: 1.4;
+}
+a.topbar__item { font-weight: 600; transition: color .2s; }
+a.topbar__item:hover, a.topbar__item:focus-visible { color: #C8ECD8; }
+.topbar .ico { opacity: .85; }
+
+/* ==========================================================================
+   MASTHEAD
+   ========================================================================== */
+.masthead {
+  position: sticky; top: 0; z-index: 90;
+  background: var(--gc-surface);
+  border-bottom: 1px solid rgba(9, 44, 61, .09);
+}
+.masthead__in {
+  display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 2.25rem);
+  min-height: 84px;
+}
+.masthead__logo { display: block; flex: none; }
+.masthead__logo img { width: clamp(150px, 16vw, 200px); height: auto; }
+
+.masthead__nav { display: flex; gap: clamp(.85rem, 1.8vw, 1.65rem); margin-inline-start: auto; }
+.masthead__nav a {
+  color: var(--gc-navy); text-decoration: none;
+  font-weight: 600; font-size: 1.02rem; padding: .4rem 0;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.masthead__nav a:hover, .masthead__nav a:focus-visible {
+  color: var(--cta-green); border-bottom-color: var(--cta-green);
+}
+
+.masthead__act { display: flex; align-items: center; gap: 1rem; }
+
+/* The nav holds down to here; below it the footer nav and the dock carry
+   wayfinding, as they did before this header changed. */
+@media (max-width: 940px) {
+  .masthead__nav { display: none; }
+  .masthead__act { margin-inline-start: auto; }
+}
+/* The contact bar already carries the phone and the place, so on narrow
+   screens it keeps only what a thumb needs and stops wrapping to three rows. */
+@media (max-width: 860px) {
+  .topbar__item--mid { display: none; }
+  .topbar__in { justify-content: center; }
+}
+@media (max-width: 560px) {
+  .masthead__in { min-height: 68px; }
+  .masthead__act .btn--sm { font-size: .84rem; padding: .7rem 1rem; }
+  .masthead__logo img { width: 132px; }
+  /* Shorter label so the pill stays one line and the mark keeps its room. */
+  .lbl-full { display: none; }
+  .lbl-short { display: inline; }
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero {
+  position: relative; isolation: isolate;
+  background: var(--gc-navy);
+  color: #fff;
+  padding-block: clamp(3rem, 6vw, 5.5rem) clamp(3.5rem, 7vw, 6rem);
+  overflow: hidden;
+}
+/* Full-bleed photograph. The source is a 960px CC0 frame upscaled to 1920, so
+   it carries no real detail at this size — the scrim below is what makes that
+   acceptable, and it is why the copy sits on the near-opaque end of it. */
+.hero__bg {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: 50% 58%;
+}
+/* The scrim covers the words and nothing else: near-opaque under the copy,
+   gone by ~74%, so the right of the frame is clean photograph. */
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(95deg,
+    rgba(9, 44, 61, .95) 0%,
+    rgba(9, 44, 61, .93) 34%,
+    rgba(9, 44, 61, .70) 50%,
+    rgba(9, 44, 61, .26) 63%,
+    rgba(9, 44, 61, 0) 74%);
+}
+.hero__in { display: block; }
+.hero__copy { max-width: min(56%, 40rem); }
+
+.hero__h1 {
+  /* tokens.css sets h1 to uppercase; this headline is a sentence with three
+     place names in it, so it follows the site-wide heading case (capitalize)
+     instead. Sized so the line count stays at three, not four. */
+  text-transform: capitalize;
+  font-size: clamp(2.1rem, 3.5vw, 3.05rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: #fff;
+  max-width: 24ch;
+  overflow-wrap: break-word;
+}
+.hero__h1 em { font-style: normal; color: var(--accent-soft); }
+
+.hero__sub {
+  margin: clamp(1.25rem, 2.5vw, 1.9rem) 0 0;
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  color: var(--on-navy-dim);
+  max-width: 50ch;
+}
+
+.hero__cta { margin-top: clamp(1.4rem, 2.6vw, 2rem); }
+
+/* Phone and reassurance share one line under the button, so the block reads
+   as two beats rather than three stacked rows. */
+.hero__meta {
+  margin-top: clamp(1.1rem, 2vw, 1.5rem);
+  display: flex; align-items: baseline; gap: .4rem 1.25rem; flex-wrap: wrap;
+}
+.hero__meta .telno { color: #fff; font-size: clamp(1.15rem, 1.8vw, 1.25rem); }
+.hero__meta .telno:hover { color: var(--accent-soft); }
+.hero__note { margin: 0; color: var(--on-navy-dim); font-size: .95rem; font-weight: 500; }
+
+/* Narrow enough that the copy needs the full width, so the scrim goes with it
+   and covers the frame rather than clearing to a side that no longer exists. */
+@media (max-width: 900px) {
+  .hero__copy { max-width: 100%; }
+  .hero__h1 { max-width: 20ch; }
+  .hero::before {
+    background: linear-gradient(180deg,
+      rgba(9, 44, 61, .94) 0%, rgba(9, 44, 61, .90) 55%, rgba(9, 44, 61, .84) 100%);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero__cta { gap: .75rem; }
+  .hero__cta .btn { width: 100%; justify-content: center; }
+  .hero__h1 { max-width: 100%; }
+}
+
+/* Centered Goose Flooring-style hero variant. */
+.hero {
+  min-height: clamp(34rem, 62vw, 44rem);
+  padding-block: clamp(5rem, 8vw, 7rem);
+}
+.hero::before {
+  background:
+    linear-gradient(180deg, rgba(9, 44, 61, .78) 0%, rgba(9, 44, 61, .84) 100%),
+    radial-gradient(circle at 50% 45%, rgba(9, 44, 61, .26), rgba(9, 44, 61, .84) 72%);
+}
+.hero__in {
+  min-height: inherit;
+  display: grid;
+  place-items: center;
+}
+.hero__copy {
+  width: min(100%, 78rem);
+  max-width: none;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+.hero__eyebrow {
+  margin: 0 0 clamp(1.1rem, 2vw, 1.55rem);
+  color: #fff;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .34);
+}
+.hero__h1 {
+  font-size: clamp(2.6rem, 5vw, 4.85rem);
+  line-height: 1.08;
+  max-width: 23ch;
+  text-align: center;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .36);
+}
+.hero__h1 em { color: #fff; }
+.hero__highlight {
+  display: inline-block;
+  padding: .02em .18em .09em;
+  color: #fff;
+  /* Wood grain over the brand green: stretched SVG turbulence draws the grain,
+     faint horizontal seams suggest deck boards. */
+  background-color: var(--cta-green);
+  background-image:
+    repeating-linear-gradient(180deg, transparent 0 calc(33.33% - 1px), rgba(0, 0, 0, .18) calc(33.33% - 1px) 33.33%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='160'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .22' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.9 .6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(0, 0, 0, .12));
+  background-size: 100% 100%, 1400px 160px, 100% 100%;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 .12em .45em rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+.hero__sub {
+  max-width: 80ch;
+  color: rgba(255, 255, 255, .92);
+  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+  line-height: 1.45;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .32);
+}
+.hero__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.75rem, 3vw, 2.35rem);
+}
+.hero__meta { display: none; }
+
+@media (max-width: 900px) {
+  .hero__h1 { max-width: 18ch; }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    min-height: 36rem;
+    padding-block: 4.5rem;
+  }
+  .hero__h1 { max-width: 100%; }
+  .hero__sub { font-weight: 600; }
+}
+
+/* Hero fit/readability pass: reveal more photo and keep the whole pitch visible. */
+.hero {
+  min-height: min(42rem, calc(100svh - 9.5rem));
+  padding-block: clamp(2rem, 4vh, 3.25rem);
+  display: grid;
+  align-items: center;
+}
+.hero__bg {
+  filter: brightness(1.08) saturate(1.05);
+}
+.hero::before {
+  background:
+    linear-gradient(180deg, rgba(9, 44, 61, .54) 0%, rgba(9, 44, 61, .66) 100%),
+    radial-gradient(circle at 50% 45%, rgba(9, 44, 61, .12), rgba(9, 44, 61, .58) 76%);
+}
+.hero__in {
+  min-height: 0;
+}
+.hero__eyebrow {
+  margin-bottom: clamp(.7rem, 1.4vw, 1rem);
+}
+.hero__h1 {
+  max-width: 25ch;
+  font-size: clamp(2.35rem, 4.15vw, 4.05rem);
+  line-height: 1.04;
+}
+.hero__highlight {
+  padding: .01em .16em .07em;
+}
+.hero__sub {
+  margin-top: clamp(1rem, 1.8vw, 1.35rem);
+  max-width: 66ch;
+  font-size: clamp(1rem, 1.25vw, 1.18rem);
+  line-height: 1.38;
+}
+.hero__cta {
+  margin-top: clamp(1.25rem, 2.3vw, 1.8rem);
+}
+.hero__cta .btn {
+  padding: .95rem 1.8rem;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+}
+
+@media (max-width: 760px) {
+  .hero {
+    min-height: min(40rem, calc(100svh - 5.25rem));
+    padding-block: 3.4rem;
+  }
+  .hero__h1 {
+    font-size: clamp(2.25rem, 10.8vw, 3.1rem);
+    line-height: 1.05;
+  }
+  .hero__sub {
+    max-width: 31ch;
+  }
+}
+
+/* ==========================================================================
+   HOW IT WORKS
+   ========================================================================== */
+/* Steps on the left, one backyard illustration on the right that moves
+   through the job: empty yard, measured, framed, finished. The figure's
+   data-stage (1-4) decides which layers show; script.js sets it from scroll
+   or a click. */
+.how .shell { display: grid; justify-items: center; }
+.how__h2 { margin: 0 auto; max-width: 26ch; text-align: center; color: var(--gc-ink); font-size: clamp(2rem, 3vw, 2.65rem); line-height: 1.18; }
+
+.how__in {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 4.5vw, 4rem);
+  align-items: center;
+  margin-bottom: clamp(2.5rem, 4.5vw, 3.5rem);
+}
+
+.how__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+.how__step {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.05rem 1.2rem;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color .35s, border-color .35s, box-shadow .35s;
+}
+.how__step:hover { background: rgba(255, 255, 255, .6); }
+.how__step.is-on {
+  background: #fff;
+  border-color: rgba(28, 132, 70, .25);
+  box-shadow: 0 1rem 2rem -1.25rem rgba(9, 44, 61, .35);
+}
+.how__num {
+  flex: none;
+  width: 2.5rem; height: 2.5rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 2px solid rgba(28, 132, 70, .35);
+  color: var(--cta-green);
+  font-weight: 800;
+  transition: background-color .35s, color .35s, border-color .35s;
+}
+.how__step.is-on .how__num { background: var(--cta-green); border-color: var(--cta-green); color: #fff; }
+.how__txt { color: #56646A; font-size: .95rem; line-height: 1.5; }
+.how__txt b {
+  display: block;
+  margin-bottom: .15rem;
+  color: var(--gc-navy);
+  font-size: clamp(1.05rem, 1.35vw, 1.18rem);
+  font-weight: 800;
+  line-height: 1.25;
+  text-transform: capitalize;
+}
+
+/* The illustration */
+.how__art {
+  position: relative;
+  margin: 0;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 2rem 4rem -2rem rgba(9, 44, 61, .45);
+}
+.how__art svg { display: block; width: 100%; height: auto; }
+.how__cap {
+  position: absolute;
+  left: 1rem; top: 1rem;
+  padding: .45rem .9rem;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .92);
+  color: var(--gc-navy);
+  font-size: .85rem;
+  font-weight: 700;
+  box-shadow: 0 6px 16px -10px rgba(9, 44, 61, .5);
+}
+
+/* Palette of the illustration: soft sky, brand greens, warm deck wood */
+.a-halo { fill: #FFE7A8; opacity: .45; }
+.a-sun { fill: #FFD27A; }
+.a-cloud ellipse { fill: #fff; opacity: .9; }
+.a-cloud--2 ellipse { opacity: .7; }
+.a-hills { fill: #C3E4CF; }
+.a-trunk { fill: #7A5334; }
+.a-branch { stroke: #7A5334; stroke-width: 4; stroke-linecap: round; fill: none; }
+.a-leaf { fill: #5FB482; }
+.a-leaf-hi { fill: #86CFA2; }
+
+.a-siding { stroke: #C3D1D7; stroke-width: 1.5; fill: none; }
+.a-trim { fill: #fff; }
+.a-eave { fill: #0E3A4F; }
+.a-roof { fill: var(--gc-navy); }
+.a-found { fill: #B9C7CD; }
+.a-winframe { fill: #fff; filter: drop-shadow(0 3px 4px rgba(9, 44, 61, .15)); }
+.a-glint { stroke: #fff; stroke-width: 5; opacity: .45; stroke-linecap: round; }
+.a-winbar { stroke: #fff; stroke-width: 3; }
+.a-sill { fill: #fff; }
+.a-doorframe { fill: #fff; }
+.a-door { fill: var(--gc-navy); }
+.a-doorglass { fill: #8CBCD3; opacity: .7; }
+.a-knob { fill: #FFD27A; }
+.a-lamp { fill: #FFD27A; filter: drop-shadow(0 0 6px rgba(255, 210, 122, .9)); }
+.a-shrub circle { fill: #4FA673; }
+.a-shrub .a-shrub-hi { fill: #7DC99C; }
+.a-grass { stroke: #6DBE8C; stroke-width: 4; }
+.a-tuft { stroke: #5FB482; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.a-bubble { fill: #fff; filter: drop-shadow(0 10px 14px rgba(9, 44, 61, .16)); }
+.a-bubble-ico { fill: var(--cta-green); }
+.a-phone { fill: #fff; }
+.a-t1 { fill: var(--gc-navy); font: 800 18px var(--font-display, sans-serif); }
+.a-t2 { fill: #56646A; font: 600 12.5px var(--font-sans, sans-serif); }
+
+.a-ghost { fill: rgba(28, 132, 70, .07); stroke: var(--cta-green); stroke-width: 2; stroke-dasharray: 8 6; }
+.a-stakes rect { fill: #C9844A; }
+.a-flag { fill: #F07E3A; }
+.a-string { stroke: #F07E3A; stroke-width: 2; stroke-dasharray: 3 4; }
+.a-dim { stroke: var(--gc-navy); stroke-width: 2; fill: var(--gc-navy); }
+.a-dimtag { fill: #FFD27A; filter: drop-shadow(0 3px 5px rgba(9, 44, 61, .15)); }
+.a-dimtxt { fill: var(--gc-navy); font: 800 13px var(--font-sans, sans-serif); text-anchor: middle; }
+
+.a-footing rect, .a-foot { fill: #B9C0C3; }
+.a-lumber rect { stroke: #A67B45; stroke-width: 1.2; }
+.a-grain { stroke: #B88A52; stroke-width: 1; opacity: .7; }
+.a-brace { stroke: #B8864B; stroke-width: 7; stroke-linecap: round; }
+.a-card { fill: #fff; filter: drop-shadow(0 12px 18px rgba(9, 44, 61, .2)); }
+.a-cardbar { fill: var(--cta-green); }
+.a-ct1 { fill: var(--gc-navy); font: 800 17px var(--font-display, sans-serif); }
+.a-ct2 { fill: var(--cta-green); font: 700 12.5px var(--font-sans, sans-serif); }
+.a-line { fill: #E4ECE8; }
+.a-check { fill: var(--cta-green); }
+.a-checkmark { stroke: #fff; stroke-width: 2.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.a-post rect:not(.a-foot) { fill: #6E4526; }
+.a-fascialine { stroke: #5A361D; stroke-width: 1; opacity: .7; }
+.a-boardlines { stroke: #6E4526; stroke-width: 1.5; }
+.a-deckhi { stroke: #D29A64; stroke-width: 1.5; opacity: .8; }
+.a-lights { stroke: #3B4A52; stroke-width: 1.5; fill: none; }
+.a-lightpost { stroke: #fff; stroke-width: 4; stroke-linecap: round; }
+.a-bulbs circle { fill: #FFD27A; filter: drop-shadow(0 0 5px rgba(255, 200, 90, .95)); }
+.a-baluster { stroke: #fff; stroke-width: 4; }
+.a-railpost, .a-railcap, .a-railbottom { fill: #fff; stroke: #D3DDE1; stroke-width: 1; }
+.a-stringer { fill: #7E5030; stroke: #5A361D; stroke-width: 1.5; }
+.a-treads { stroke: #B07645; stroke-width: 5; stroke-linecap: round; }
+.a-handrail, .a-handpost { stroke: #fff; stroke-width: 5; stroke-linecap: round; filter: drop-shadow(0 1px 1px rgba(9, 44, 61, .2)); }
+.a-slat, .a-seat { fill: var(--cta-green); }
+.a-arm { stroke: #166E3A; stroke-width: 5; stroke-linecap: round; }
+.a-chair .a-leg { stroke: #166E3A; stroke-width: 3.5; stroke-linecap: round; fill: none; }
+.a-table rect:first-child { fill: #fff; }
+.a-table path { stroke: #fff; stroke-width: 3; }
+.a-glass { fill: #FFD27A; opacity: .9; }
+.a-pot { fill: #E07B3F; }
+.a-potrim { fill: #C9652D; }
+.a-leafy { fill: #3E9D63; }
+
+/* Stage visibility. Every layer fades and settles; build layers drop in. */
+.how__art [class^="l-"] { opacity: 0; transition: opacity .5s ease, transform .6s cubic-bezier(.34, 1.3, .64, 1); }
+.l-s1, .l-quote { transform: translateY(10px); }
+.l-build, .l-frame { transform: translateY(-14px); }
+.how__art[data-stage="1"] .l-s1,
+.how__art[data-stage="2"] .l-measure,
+.how__art[data-stage="3"] .l-measure,
+.how__art[data-stage="3"] .l-frame,
+.how__art[data-stage="3"] .l-quote,
+.how__art[data-stage="4"] .l-build { opacity: 1; transform: none; }
+/* Build parts arrive one after another */
+.how__art[data-stage="4"] .a-rail   { transition-delay: .15s; }
+.how__art[data-stage="4"] .a-stairs,
+.how__art[data-stage="4"] .a-treads { transition-delay: .25s; }
+.how__art .l-build > * { transition: opacity .5s ease, transform .6s cubic-bezier(.34, 1.3, .64, 1); }
+.how__art:not([data-stage="4"]) .a-chair,
+.how__art:not([data-stage="4"]) .a-plant { opacity: 0; transform: translateY(-10px); }
+.how__art[data-stage="4"] .a-chair { transition-delay: .35s; }
+.how__art[data-stage="4"] .a-plant,
+.how__art[data-stage="4"] .a-table { transition-delay: .45s; }
+.how__art:not([data-stage="4"]) .a-table,
+.how__art:not([data-stage="4"]) .a-lights,
+.how__art:not([data-stage="4"]) .a-lightpost,
+.how__art:not([data-stage="4"]) .a-bulbs { opacity: 0; }
+.how__art[data-stage="4"] .a-lights,
+.how__art[data-stage="4"] .a-bulbs { transition-delay: .6s; }
+
+.how__cta { box-shadow: none; }
+.how__cta .ico { order: -1; }
+
+@media (max-width: 900px) {
+  .how__in { grid-template-columns: minmax(0, 1fr); }
+  /* Pinned under the sticky header while the steps scroll beneath it, so the
+     backyard can be watched all the way to the finished deck. */
+  .how__art {
+    order: -1;
+    position: sticky;
+    top: 78px;
+    z-index: 2;
+    align-self: start;
+    box-shadow: 0 1.25rem 2rem -1.25rem rgba(9, 44, 61, .55);
+  }
+  /* Room under the last step so step 4 can reach the reading line while the
+     picture is still pinned */
+  .how__steps { padding-bottom: 20vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .how__art [class^="l-"], .how__art .l-build > * { transition: none; }
+}
+
+/* ==========================================================================
+   FINANCING
+   ========================================================================== */
+/* Grey band with a faint family photo behind the card. The photo sits at low
+   opacity, desaturated a touch, and fades out at the edges so the card and its
+   copy keep all the contrast. */
+.financing { position: relative; overflow: hidden; isolation: isolate; }
+.financing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("images/financing-family.jpg") 20% 30% / cover no-repeat;
+  opacity: .2;
+  filter: grayscale(.35);
+  -webkit-mask-image: radial-gradient(ellipse 90% 100% at 50% 50%, #000 55%, transparent 100%);
+          mask-image: radial-gradient(ellipse 90% 100% at 50% 50%, #000 55%, transparent 100%);
+}
+
+/* ---------- financing card ----------
+   Copy on the green half, photograph on the other, rounded and lifted off the
+   grey. No texture on the green: it has to stay exactly #1C8446 so the white
+   copy measures 4.7:1. */
+.finance {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  max-width: 68rem;
+  margin-inline: auto;
+  background: var(--cta-green);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 2rem 4rem -2rem rgba(9, 44, 61, .55);
+}
+.finance__copy {
+  padding: clamp(2rem, 4.5vw, 3.75rem);
+  display: grid;
+  align-content: center;
+  justify-items: start;
+}
+.finance .h2 {
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
+  line-height: 1.05;
+  max-width: 14ch;
+}
+.finance .lead {
+  margin-top: 1rem;
+  max-width: 34ch;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .92);
+}
+/* White button: the one thing on the green that reads as "press me" */
+.finance .finance__btn {
+  margin-top: clamp(1.5rem, 2.5vw, 2rem);
+  background: #fff;
+  color: var(--gc-navy);
+  fill: var(--gc-navy);
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .5);
+}
+.finance .finance__btn:hover,
+.finance .finance__btn:focus-visible { background: var(--gc-navy); color: #fff; fill: #fff; }
+
+.finance__facts {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: .5rem;
+}
+.finance__facts li { display: flex; align-items: flex-start; gap: .55rem; color: #fff; font-size: .98rem; font-weight: 600; line-height: 1.4; }
+.finance__facts .ico { flex: none; margin-top: .15rem; width: 1.05rem; height: 1.05rem; color: #BDEFD1; stroke-width: 2.4; }
+.finance__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  margin-top: clamp(1.5rem, 2.5vw, 2rem);
+}
+.finance .finance__actions .finance__btn { margin-top: 0; }
+.finance__lender {
+  display: inline-flex;
+  flex-direction: column;
+  gap: .2rem;
+  padding: .45rem .8rem .5rem;
+  border-radius: .6rem;
+  background: #fff;
+}
+.finance__lender small { color: #56646A; font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.finance__lender img { width: auto; height: 1.6rem; }
+.finance__fine { margin: .9rem 0 0; color: rgba(255, 255, 255, .75); font-size: .8rem; }
+.finance__fig { position: relative; margin: 0; }
+.finance__fig img {
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  object-fit: cover;
+  object-position: 48% 35%;   /* keeps all three faces in frame */
+}
+
+@media (max-width: 800px) {
+  .finance { grid-template-columns: 1fr; }
+  .finance__fig { order: -1; }
+  .finance__fig img { min-height: 0; aspect-ratio: 16 / 10; }
+}
+@media (max-width: 520px) {
+  .finance .finance__btn { width: 100%; justify-content: center; }
+}
+/* ==========================================================================
+   SERVICES
+   ========================================================================== */
+.services__in {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+.services .h2 { margin-bottom: 0; }
+/* Same short green rule as the Why-us title, left-aligned under this one */
+.services__rule {
+  display: block;
+  width: clamp(5.5rem, 12vw, 7.5rem);
+  height: 4px;
+  margin: clamp(1rem, 1.8vw, 1.35rem) 0 clamp(1.25rem, 2.2vw, 1.6rem);
+  border-radius: 2px;
+  background: var(--cta-green);
+}
+.services .btn, .services .act { margin-top: 1.9rem; }
+
+.services__fig { margin: 0; }
+
+/* ---------- the deck that builds itself ----------
+   The page's signature moment. Scroll position through this section drives the
+   real construction order — footings, posts, beams, joists, decking, railing —
+   and the layer just added is picked out in green before it settles. Authored
+   isometric SVG rather than a picture of one, so it is sharp at any size and
+   every layer is addressable. Without JS, or under reduced motion, the finished
+   deck is simply there. */
+.deckbuild__panel {
+  background: var(--gc-navy);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: clamp(.25rem, 1vw, .75rem);
+  aspect-ratio: 8 / 7;   /* matched to the scene's own 1.11, so no navy is left over */
+  display: grid; place-items: center;
+  overflow: hidden;
+}
+.deckbuild__svg { width: 100%; height: 100%; display: block; transform: scale(1.08); }
+
+.deckbuild polygon {
+  stroke: var(--gc-navy);
+  stroke-width: .7;
+  stroke-linejoin: round;
+  transition: fill .6s ease;
+}
+.fT { fill: var(--dk-t, #E8EFF2); }
+.fL { fill: var(--dk-l, #A9BFCB); }
+.fR { fill: var(--dk-r, #7B93A2); }
+
+/* The lot the deck is built on: house, ground, survey grid, shadow, planting.
+   Held a step or two off the panel ground so it reads as setting and never
+   competes with the thing being built. */
+.scene { --dk-t: #1B4A63; --dk-l: #123B51; --dk-r: #0E3145; }
+.gnd { fill: #0C3244; stroke: none; }
+.grd { stroke: #134159; stroke-width: 1; fill: none; }
+.shd { fill: #07222F; stroke: none; }
+.opn { fill: #0A2838; stroke: #22566F; stroke-width: 1; }
+.veg { fill: #1B6046; stroke: var(--gc-navy); stroke-width: .7; }
+
+.dp { transition: opacity .55s ease, transform .55s cubic-bezier(.16, 1, .3, 1); }
+.deckbuild.is-staged .dp { opacity: 0; transform: translateY(-20px); }
+.deckbuild.is-staged .dp.is-on { opacity: 1; transform: none; }
+.dp.is-active { --dk-t: #C9F2DC; --dk-l: #6ECB9A; --dk-r: #34A76B; }
+
+.deckbuild__cap {
+  display: flex; align-items: center; gap: .9rem;
+  margin-top: 1.1rem;
+}
+.deckbuild__steps { display: flex; gap: .3rem; }
+.deckbuild__steps i {
+  width: 20px; height: 3px; border-radius: var(--radius-pill);
+  background: rgba(9, 44, 61, .16);
+  transition: background .45s ease;
+}
+.deckbuild__steps i.on { background: var(--cta-green); }
+.deckbuild__name {
+  font-size: .95rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .05em;
+  color: var(--gc-navy);
+}
+
+/* Ruled rows — the flooring cross-sell keeps these. */
+.ticks { list-style: none; margin: 2.1rem 0 0; padding: 0; }
+.ticks li {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding-block: 1.1rem;
+  border-bottom: var(--hair);
+  max-width: 62ch;
+}
+.ticks li:first-child { border-top: var(--hair); }
+
+/* The check gets a disc so the row has a left anchor instead of a stray glyph.
+   The tint works on white and on the mint band alike, and stays a tint — the
+   solid green is still reserved for things you can press. */
+.ticks__mark,
+.feat__mark {
+  flex: none;
+  width: 2.1rem; height: 2.1rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: rgba(28, 132, 70, .13);
+  color: var(--cta-green);
+}
+.ticks__mark { margin-top: -.1rem; }
+.ticks__mark .ico, .feat__mark .ico { width: 1.15rem; height: 1.15rem; }
+.ticks b, .feat b { color: var(--gc-navy); font-weight: 700; }
+
+/* ---------- the three build promises, as cards ----------
+   Cards only here, at the user's instruction, and only because they get the
+   full width to sit across — a three-up grid inside the copy column would
+   have been three stacked boxes pretending to be a grid. No heading and no
+   icon tile: the promise is one sentence with its subject carrying the weight,
+   which is what keeps these off the generic feature-card template. */
+.feats {
+  list-style: none;
+  margin-block: clamp(2.5rem, 5vw, 4rem) 0;
+  display: grid; gap: clamp(.9rem, 1.6vw, 1.35rem);
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+}
+.feat {
+  display: grid; gap: 1rem;
+  align-content: start;
+  background: var(--gc-surface);
+  border-radius: var(--radius-md);
+  padding: clamp(1.4rem, 2.2vw, 1.85rem);
+}
+.feat p { margin: 0; max-width: 34ch; }
+.feat__mark { width: 2.4rem; height: 2.4rem; }
+
+@media (max-width: 860px) {
+  .services__in { grid-template-columns: 1fr; }
+  .services__fig { order: -1; }
+}
+
+/* ==========================================================================
+   CTA BREAK
+   ========================================================================== */
+.cta-break {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(21rem, 28vw, 27rem);
+  padding-block: clamp(3.8rem, 6vw, 5.5rem);
+  background: #fff;
+  overflow: hidden;
+}
+.cta-break::before {
+  content: "";
+  position: absolute;
+  inset: clamp(3.5rem, 6vw, 5.9rem) 0;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, transparent 0 18%, rgba(255,255,255,.34) 18.2% 30%, transparent 30.2% 100%),
+    linear-gradient(45deg, transparent 0 55%, rgba(255,255,255,.3) 55.2% 68%, transparent 68.2% 100%),
+    linear-gradient(90deg, rgba(237,248,237,.98), rgba(225,241,232,.98));
+}
+.cta-break::after {
+  content: "";
+  position: absolute;
+  inset: clamp(3.5rem, 6vw, 5.9rem) 0;
+  z-index: -1;
+  background:
+    linear-gradient(45deg, transparent 0 8%, rgba(255,255,255,.42) 8.2% 15%, transparent 15.2% 100%),
+    linear-gradient(135deg, transparent 0 80%, rgba(255,255,255,.36) 80.2% 92%, transparent 92.2% 100%);
+  opacity: .7;
+}
+.cta-break__in {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(19rem, 1.1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  min-height: clamp(14rem, 20vw, 18rem);
+}
+.cta-break__copy {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+}
+/* One sentence from the copy deck, set in three tiers: lead-in, the number
+   as the thing to act on, then the promise in a lighter reading size. */
+.cta-break__lead {
+  margin: 0;
+  display: grid;
+  justify-items: start;
+  color: var(--gc-ink);
+}
+.cta-break__intro {
+  font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+}
+.cta-break__phone {
+  margin-top: .15rem;
+  color: var(--cta-green);
+  font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.cta-break__phone:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: .12em; }
+.cta-break__rest {
+  margin-top: .9rem;
+  max-width: 34ch;
+  font-size: clamp(1.05rem, 1.35vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.55;
+  opacity: .82;
+  text-wrap: pretty;
+}
+.cta-break__btn {
+  margin-top: 1.65rem;
+  box-shadow: none;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  padding: .9rem 1.45rem;
+}
+.cta-break__btn .ico { order: -1; width: 1.05em; height: 1.05em; }
+.cta-break__mark {
+  justify-self: center;
+  align-self: center;
+  width: min(42vw, 35rem);
+  min-width: 26rem;
+  max-width: none;
+  height: auto;
+  margin-block: clamp(-5.5rem, -6vw, -3rem);
+  filter: drop-shadow(0 1rem 1.25rem rgba(9, 44, 61, .24));
+  /* The file carries its own soft shadow right up to its left and bottom
+     edges, which would otherwise end in a hard, visible cut. Fade it out. */
+  -webkit-mask-image: linear-gradient(to top, transparent, #000 22%), linear-gradient(to right, transparent, #000 25%), linear-gradient(to left, transparent, #000 4%);
+          mask-image: linear-gradient(to top, transparent, #000 22%), linear-gradient(to right, transparent, #000 25%), linear-gradient(to left, transparent, #000 4%);
+  -webkit-mask-composite: source-in, source-in;
+          mask-composite: intersect;
+}
+/* The band already leaves white below it; the next section need not add a
+   full band's padding on top of that. */
+.cta-break + .band { padding-top: clamp(1rem, 2vw, 1.75rem); }
+.cta-break { padding-bottom: clamp(2rem, 3.5vw, 3rem); }
+.cta-break::before, .cta-break::after { bottom: clamp(1.75rem, 3vw, 2.75rem); }
+
+@media (max-width: 820px) {
+  .cta-break {
+    min-height: 0;
+    padding-block: 3.5rem;
+  }
+  .cta-break::before,
+  .cta-break::after { inset: 2rem 0; }
+  .cta-break__in {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+  .cta-break__mark {
+    justify-self: center;
+    width: min(82vw, 25rem);
+    min-width: 0;
+    margin-block: -1.5rem -3rem;
+  }
+}
+
+/* ==========================================================================
+   WHY CHOOSE US
+   ========================================================================== */
+.why {
+  background: #fff;
+  padding-block: clamp(4.5rem, 7.5vw, 7rem) clamp(5rem, 8vw, 7.5rem);
+}
+.why .shell {
+  display: grid;
+  justify-items: center;
+}
+.why__h2 {
+  max-width: 48ch;
+  margin: 0 auto;
+  color: var(--gc-ink);
+  font-size: clamp(2rem, 3vw, 2.65rem);
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+  text-align: center;
+}
+.why__rule {
+  display: block;
+  width: clamp(5.5rem, 12vw, 7.5rem);
+  height: 4px;
+  margin: clamp(1.1rem, 2vw, 1.5rem) auto clamp(2.6rem, 4.5vw, 3.75rem);
+  border-radius: 2px;
+  background: var(--cta-green);
+}
+
+/* Four reasons in a row, centred: icon in a soft green circle, title, one
+   short line. Kept plain on purpose, so the reasons read at a glance. */
+.why__list {
+  width: 100%;
+  list-style: none;
+  margin: 0 0 clamp(2.75rem, 5vw, 3.75rem);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.why__item { display: grid; justify-items: center; align-content: start; text-align: center; }
+.why__icon {
+  width: 5.25rem; height: 5.25rem;
+  display: grid; place-items: center;
+  margin-bottom: 1.1rem;
+  border-radius: 50%;
+  background: #DDF3E6;
+  color: var(--cta-green);
+  transition: transform .35s cubic-bezier(.16, 1, .3, 1), background-color .3s;
+}
+.why__item:hover .why__icon { transform: translateY(-4px); background: #CBEDD9; }
+.why__icon svg {
+  width: 2.1rem; height: 2.1rem;
+  fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.why__item h3 {
+  margin: 0 0 .5rem;
+  color: var(--gc-navy);
+  font-size: clamp(1.1rem, 1.4vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+.why__item p { margin: 0; max-width: 26ch; color: #56646A; font-size: .95rem; line-height: 1.55; }
+.why__cta {
+  justify-self: center;
+  min-height: 3.85rem;
+  padding: .95rem 1.45rem;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  line-height: 1;
+  box-shadow: none;
+}
+.why__cta .ico {
+  order: -1;
+  width: 1.05em;
+  height: 1.05em;
+}
+
+@media (max-width: 900px) {
+  .why__list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2.5rem; }
+}
+@media (max-width: 480px) {
+  .why__list { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   FLOORING CROSS-SELL
+   ========================================================================== */
+/* Sister-company block. Proof first: a gallery of finished interiors, then the
+   facts from goosecreekflooring.com, the services as chips, and one solid
+   button out to their site. */
+.flooring__in {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 5.5vw, 5rem);
+  align-items: center;
+}
+
+.flooring__gallery {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 1 / 1.02;
+}
+.flooring__shot {
+  position: absolute;
+  object-fit: cover;
+  border: 5px solid #fff;
+  border-radius: .9rem;
+  box-shadow: 0 1.2rem 2.6rem -0.8rem rgba(9, 44, 61, .34);
+}
+.flooring__shot--main   { left: 0;  top: 0;   width: 58%; height: 78%; z-index: 1; }
+.flooring__shot--stairs { right: 0; top: 8%;  width: 48%; height: 38%; z-index: 2; }
+.flooring__shot--detail { right: 8%; bottom: 0; width: 40%; height: 48%; z-index: 3; }
+
+.flooring .h2 { margin-bottom: 1.1rem; max-width: 18ch; }
+.flooring__lead { max-width: 48ch; color: #3E4B51; font-size: clamp(1.02rem, 1.3vw, 1.15rem); }
+
+/* Facts as round seals: solid outer ring, dashed inner ring, icon on top */
+.flooring__seals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(.75rem, 2vw, 1.25rem);
+  margin: clamp(1.6rem, 3vw, 2.1rem) 0;
+  padding: 0;
+  list-style: none;
+}
+.seal {
+  position: relative;
+  width: clamp(7.25rem, 10vw, 8.25rem);
+  aspect-ratio: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: .15rem;
+  padding: .9rem;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--cta-green);
+  box-shadow: 0 .8rem 1.6rem -1rem rgba(9, 44, 61, .45);
+  text-align: center;
+  transition: transform .35s cubic-bezier(.16, 1, .3, 1);
+}
+.seal::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(28, 132, 70, .45);
+  pointer-events: none;
+}
+.seal:hover { transform: scale(1.05); }
+.seal__ico {
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-bottom: .1rem;
+  fill: none;
+  stroke: var(--cta-green);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.seal__value {
+  color: var(--gc-navy);
+  font-size: clamp(1.3rem, 2vw, 1.55rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.seal__label {
+  max-width: 11ch;
+  color: #56646A;
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.flooring__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .9rem 1.25rem;
+  margin-top: clamp(1.75rem, 3vw, 2.25rem);
+}
+.flooring .flooring__btn { margin-top: 0; }
+
+@media (max-width: 860px) {
+  .flooring__in { grid-template-columns: 1fr; }
+  .flooring__gallery { max-width: 34rem; width: 100%; margin-inline: auto; }
+}
+@media (max-width: 520px) {
+  .flooring__seals { justify-content: center; }
+  .flooring__btn { width: 100%; justify-content: center; }
+}
+
+/* ==========================================================================
+   PORTFOLIO
+   ========================================================================== */
+.work__h2 { margin-bottom: .75rem; text-align: center; width: 100%; max-width: none; }
+.work__carousel-wrap {
+  width: 100%;
+  overflow: hidden;
+  margin: 2.75rem 0;
+  display: flex;
+}
+.work__carousel {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; gap: 1rem;
+  width: max-content;
+  animation: scroll-carousel 40s linear infinite;
+}
+.work__carousel:hover {
+  animation-play-state: paused;
+}
+@keyframes scroll-carousel {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.work__carousel li {
+  position: relative;
+  width: clamp(280px, 25vw, 400px);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--gc-surface);
+  flex-shrink: 0;
+}
+.work__carousel img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .45s cubic-bezier(.16, 1, .3, 1);
+}
+.work__carousel li:hover img { transform: scale(1.04); }
+.work .act { display: table; margin: 0 auto; }
+
+/* ==========================================================================
+   ABOUT
+   ========================================================================== */
+.about__in {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+.about .h2 { margin-bottom: 1.4rem; }
+.about .btn, .about .act { margin-top: 2rem; }
+.about__turn {
+  font-size: var(--fs-title);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--gc-navy);
+  margin-block: 1.6em 1.1em;
+  max-width: 24ch;
+}
+.about__fig { margin: 0; }
+.about__fig img {
+  width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+@media (max-width: 860px) {
+  .about__in { grid-template-columns: 1fr; }
+  .about__fig { order: -1; }
+  .about__fig img { aspect-ratio: 4 / 3; }
+}
+
+/* Goose Flooring-style About section. */
+.about {
+  background: #fff;
+}
+/* Services and About are both white and sit back to back: two full band
+   paddings stacked read as an empty gap, so they share one smaller one. */
+.services:has(+ .about) { padding-bottom: clamp(2rem, 3.5vw, 3rem); }
+.services + .about { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+.about:has(+ .work) { padding-bottom: clamp(2rem, 3.5vw, 3rem); }
+.about + .work { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+.about__in {
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  gap: clamp(2.5rem, 6vw, 5.25rem);
+}
+.about__copy {
+  max-width: 54rem;
+}
+.about .h2 {
+  margin-bottom: clamp(1.7rem, 3vw, 2.1rem);
+  max-width: none;
+  color: var(--gc-ink);
+  font-size: clamp(2.15rem, 3.2vw, 3rem);
+  line-height: 1.08;
+}
+.about__new {
+  max-width: 56ch;
+  margin: 0 0 1.35rem;
+  color: rgba(39, 39, 39, .72);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.38;
+  font-weight: 500;
+}
+.about__btn {
+  margin-top: clamp(1.25rem, 2.4vw, 2rem);
+  padding: .9rem 1.55rem;
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  box-shadow: none;
+}
+.about__btn .ico {
+  order: -1;
+  width: 1.05em;
+  height: 1.05em;
+}
+.about__fig {
+  position: relative;
+  margin: 0;
+}
+.about__montage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 6;
+  padding: 0;
+}
+/* A panel of deck boards behind the photos, slightly turned: planks with dark
+   gaps, one butt joint per row, and the same grain as the Why-us boards. */
+.montage-boards {
+  position: absolute;
+  inset: 9% 4% 11% 7%;
+  z-index: 0;
+  border-radius: 10px;
+  transform: rotate(-3deg);
+  background-color: #8A5A33;
+  background-image:
+    repeating-linear-gradient(180deg, transparent 0 calc(16.66% - 4px), #2A1A10 calc(16.66% - 4px) 16.66%),
+    linear-gradient(90deg, transparent 63%, rgba(30, 16, 8, .6) 63% calc(63% + 2px), transparent calc(63% + 2px)),
+    var(--wood-grain),
+    linear-gradient(180deg, rgba(255, 236, 214, .12), rgba(0, 0, 0, .14));
+  background-size: 100% 100%, 100% 33.33%, 1400px 160px, 100% 100%;
+  box-shadow: 0 1.5rem 3rem -1rem rgba(42, 26, 16, .45);
+}
+.about__montage .montage-img {
+  position: absolute;
+  aspect-ratio: auto;
+  z-index: 2;
+  object-fit: cover;
+  border: 5px solid #fff;
+  border-radius: .9rem;
+  box-shadow: 0 1.2rem 2.6rem -0.8rem rgba(9, 44, 61, .38);
+}
+/* The hero shot: tall, on the left */
+.about__montage .montage-img--main {
+  left: 0;
+  top: 4%;
+  width: 55%;
+  height: 72%;
+}
+/* Two smaller shots stacked on the right, overlapping the main one a little */
+.about__montage .montage-img--top {
+  right: 0;
+  top: 0;
+  width: 43%;
+  height: 42%;
+  z-index: 3;
+}
+.about__montage .montage-img--bot {
+  right: 5%;
+  top: 46%;
+  width: 43%;
+  height: 40%;
+  z-index: 3;
+  object-position: 50% 90%;   /* keeps the yard clutter behind the railing out of frame */
+}
+/* Screw heads sitting on the exposed boards */
+.montage-screw {
+  position: absolute;
+  z-index: 1;
+  width: .8rem;
+  height: .8rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #E2E2E2 0 .14rem, #7A7A7A .17rem .34rem, rgba(0, 0, 0, .35) .36rem);
+}
+.montage-screw--a { left: 11%; bottom: 17%; }
+.montage-screw--b { left: 18%; bottom: 17%; }
+@media (max-width: 860px) {
+  .about__in { grid-template-columns: 1fr; }
+  .about__fig { order: 0; }
+  .about__montage { max-width: 34rem; margin-inline: auto; }
+}
+
+@media (max-width: 560px) {
+  .about__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   ESTIMATE + FORM
+   ========================================================================== */
+/* Real deck photo behind the section, blurred a touch (the source is a phone
+   shot) and washed with navy so the white copy and the form card lead. */
+.estimate {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--gc-navy);
+  color: #fff;
+  padding-block: clamp(4.5rem, 8vw, 7rem);
+}
+.estimate::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  z-index: -2;
+  background: url("images/estimate-deck.jpg") center 60% / cover no-repeat;
+  filter: blur(3px) saturate(.9);
+}
+.estimate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(9, 44, 61, .96) 0%, rgba(9, 44, 61, .88) 45%, rgba(9, 44, 61, .7) 100%),
+    radial-gradient(40rem 30rem at 0% 0%, rgba(28, 132, 70, .25), transparent 60%);
+}.estimate__in {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: clamp(2.25rem, 5vw, 4.5rem);
+  align-items: center;
+}
+.estimate .h2 { max-width: 15ch; font-size: clamp(2.3rem, 4vw, 3.4rem); }
+.estimate .nowrap { white-space: nowrap; }
+.estimate .lead { margin-top: 1rem; }
+
+/* Three promises as a row of checks */
+.estimate__checks {
+  list-style: none; margin: 1.6rem 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: .6rem;
+}
+.estimate__checks li {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .5rem .95rem;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .16);
+  color: #fff; font-size: .95rem; font-weight: 600;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.estimate__checks .ico { color: var(--accent-soft); width: 1rem; height: 1rem; stroke-width: 2.4; }
+/* Phone as a clear secondary action */
+.estimate__call {
+  display: inline-flex; align-items: center; gap: .85rem;
+  margin-top: 2rem;
+  padding: .7rem 1.4rem .7rem .7rem;
+  border: 1px solid var(--on-navy-line);
+  border-radius: 99px;
+  color: #fff; text-decoration: none;
+  font-size: 1.25rem; font-weight: 800; line-height: 1.1;
+  transition: border-color .2s, background-color .2s;
+}
+.estimate__call:hover { border-color: var(--gc-green); background: rgba(255, 255, 255, .04); }
+.estimate__call small { display: block; color: var(--on-navy-dim); font-size: .78rem; font-weight: 600; }
+.estimate__call-ico {
+  width: 2.75rem; height: 2.75rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--cta-green);
+}
+.estimate__area {
+  margin-top: 1.75rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--on-navy-line);
+  color: var(--on-navy-dim); font-size: .92rem; max-width: 34ch;
+}
+
+/* The form sits in a white card; short fields pair up two per row */
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem 1rem;
+  padding: clamp(1.5rem, 3.2vw, 2.5rem);
+  background: #fff;
+  color: var(--gc-ink);
+  border-radius: 1.25rem;
+  box-shadow: 0 2.5rem 5rem -2rem rgba(0, 0, 0, .55);
+}
+.form__head, .form__row--full, .form__send, .form__note { grid-column: 1 / -1; }
+.form__head { margin-bottom: .25rem; }
+.form__title {
+  margin: 0;
+  color: var(--gc-navy);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  font-weight: 800; line-height: 1.15; letter-spacing: -0.02em;
+}
+.form__sub { margin: .3rem 0 0; color: #56646A; font-size: .92rem; }
+.form__row { display: grid; gap: .4rem; }
+.form__row label {
+  font-weight: 700; font-size: .9rem; color: var(--gc-navy);
+  display: flex; align-items: baseline; gap: .5rem;
+}
+.form__row .opt { font-weight: 500; font-size: .8rem; color: #6B7C84; }
+
+.form input, .form textarea {
+  font: inherit;
+  width: 100%;
+  padding: .85rem 1rem;
+  color: var(--gc-ink);
+  background: #F4F7F6;
+  border: 1.5px solid #DCE4E2;
+  border-radius: .7rem;
+  transition: border-color .2s, box-shadow .2s, background-color .2s;
+}
+.form textarea { resize: vertical; min-height: 6.5rem; }
+.form input::placeholder, .form textarea::placeholder { color: #7A8A91; }
+.form input:hover, .form textarea:hover { border-color: rgba(30, 139, 74, .45); }
+.form input:focus, .form textarea:focus {
+  outline: none; background: #fff; border-color: var(--cta-green);
+  box-shadow: 0 0 0 4px rgba(28, 132, 70, .16);
+}
+.form input[aria-invalid="true"], .form textarea[aria-invalid="true"] {
+  border-color: #D9483B; box-shadow: 0 0 0 4px rgba(217, 72, 59, .14);
+}
+
+/* Autofill is the one browser surface that would otherwise paint its own wash
+   straight over the page's most important control. Claim it. */
+.form input:-webkit-autofill,
+.form input:-webkit-autofill:hover,
+.form input:-webkit-autofill:focus,
+.form textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--gc-ink);
+  -webkit-box-shadow: 0 0 0 100px #F4F7F6 inset;
+  box-shadow: 0 0 0 100px #F4F7F6 inset;
+  caret-color: var(--gc-ink);
+  transition: background-color 100000s ease 0s;   /* defeats the yellow fade */
+}
+
+.form__send { width: 100%; justify-content: center; margin-top: .35rem; }
+.form__send[disabled] { opacity: .55; cursor: progress; transform: none; }
+
+.form__note { margin: 0; font-size: .95rem; min-height: 1.4em; color: var(--cta-green); font-weight: 600; text-align: center; }
+.form__note[data-state="error"] { color: #C0392B; }
+
+@media (max-width: 860px) {
+  .estimate__in { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .form { grid-template-columns: 1fr; }
+}
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+/* Light footer: brand on the left, three link columns on one baseline, no
+   boxes; each column holds five or six lines so they end together. On phones
+   the flooring list splits into two short columns. A green bar closes the page. */
+.foot {
+  background: #fff;
+  color: var(--gc-ink);
+  padding-top: clamp(3rem, 6vw, 4.5rem);
+  border-top: 1px solid rgba(9, 44, 61, .08);
+}
+.foot__in {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3.5vw, 3.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  align-items: start;
+}
+
+.foot__brand { display: grid; justify-items: start; text-align: left; }
+.foot__brand img { width: clamp(180px, 16vw, 220px); margin-bottom: 1.1rem; }
+.foot__brand p { margin: 0; max-width: 26ch; font-size: .95rem; line-height: 1.55; color: #56646A; }
+
+.foot__card { align-content: start; }
+.foot h3 {
+  margin: 0 0 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--gc-navy);
+  white-space: nowrap;
+}
+.foot h3::after {
+  content: "";
+  display: block;
+  width: 1.75rem;
+  height: 3px;
+  margin-top: .55rem;
+  border-radius: 2px;
+  background: var(--cta-green);
+}
+.foot__card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+.foot__card a {
+  color: #3E4B51; text-decoration: none; font-weight: 500; font-size: .98rem;
+  width: fit-content;
+  transition: color .2s;
+}
+.foot__card a:hover, .foot__card a:focus-visible { color: var(--cta-green); }
+
+.foot__tel {
+  display: inline-flex; align-items: center; gap: .55rem;
+  color: var(--gc-navy); font-weight: 700; font-size: 1.1rem; text-decoration: none;
+  margin-bottom: 1rem;
+}
+.foot__tel:hover { color: var(--cta-green); }
+.foot__contact-list,
+.foot__places { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.foot__contact-list { margin-bottom: 1rem; }
+.foot__contact-list a,
+.foot__places li { display: flex; align-items: center; gap: .5rem; color: #56646A; font-size: .98rem; }
+.foot__contact-list a { max-width: 100%; word-break: break-word; }
+.foot__contact-list .ico,
+.foot__places .ico, .foot__tel .ico { color: var(--cta-green); flex: none; }
+
+.foot__base {
+  background: var(--cta-green);
+  color: #fff;
+  text-align: center;
+  padding-block: 1.1rem;
+  padding-inline: var(--shell-pad);
+  font-size: .92rem;
+}
+.foot__base p { margin: 0; }
+.foot__base b { font-weight: 700; }
+
+@media (max-width: 1080px) {
+  .foot__in { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 2.5rem; }
+  .foot__brand { grid-column: 1 / -1; }
+}
+@media (max-width: 720px) {
+  .foot__in { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot__card--floor { grid-column: 1 / -1; order: 1; }
+  .foot__card--floor ul { grid-template-columns: repeat(2, max-content); column-gap: 1.5rem; }
+  .foot__card--contact { order: 0; }
+}
+@media (max-width: 420px) {
+  .foot__in { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   STICKY ACTION DOCK
+   ========================================================================== */
+.dock {
+  position: fixed; z-index: 95;
+  left: 0; right: 0; bottom: 0;
+  display: flex; gap: .6rem;
+  padding: .7rem var(--shell-pad) calc(.7rem + env(safe-area-inset-bottom));
+  background: rgba(9, 44, 61, .95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--on-navy-line);
+  transform: translateY(105%);
+  transition: transform .5s cubic-bezier(.16, 1, .3, 1);
+}
+.dock[hidden] { display: none; }
+.dock.is-up { transform: translateY(0); }
+
+.dock__tel, .dock__cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  font-weight: 700; text-decoration: none; text-transform: uppercase;
+  font-size: 1.1875rem; letter-spacing: .01em;   /* same 19px floor as .btn */
+  border-radius: var(--radius-pill);
+  padding: .8rem 1.15rem;
+}
+.dock__tel { color: #fff; border: 2px solid var(--on-navy-line); flex: 0 0 auto; }
+.dock__tel:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
+.dock__cta { background: var(--cta-green); color: #fff; flex: 1; }
+.dock__cta:hover { background: #156B38; color: #fff; }
+
+@media (min-width: 961px) { .dock { display: none !important; } }
+
+/* The dock is fixed over the page wherever it is shown, so the page owes it
+   clearance across that whole range — not only on phones. Without this the bar
+   sits on the footer base line at tablet and small-laptop widths. */
+@media (max-width: 960px) { body { padding-bottom: 5.5rem; } }
+
+/* ==========================================================================
+   PHONE: CTA labels are long, so every section button becomes a thumb target
+   instead of overflowing the gutter.
+   ========================================================================== */
+@media (max-width: 560px) {
+  /* Padding shrinks, type does not: 19px/700 is what keeps white legal on
+     the brand green, so it is a floor, not a starting point. */
+  .band .btn,
+  .cta-break .btn,
+  .form__send {
+    width: 100%;
+    justify-self: stretch;
+    justify-content: center;
+    font-size: 1.1875rem;
+    padding: .95rem .9rem;
+    text-align: center;
+  }
+  .masthead__act .btn { width: auto; justify-self: auto; }
+
+  /* The ruled actions stay text rather than stretching into pills — but a 2px
+     rule under one 16px line is a ~36px target, and this audience is phone-first.
+     Pad to the 44px floor and keep it inline. */
+  .band .act {
+    min-height: 44px;
+    padding-top: .75rem;
+    padding-bottom: .6rem;
+  }
+}
+
+/* ==========================================================================
+   PHONE PASS (≤480px) — measured at 375px
+   ========================================================================== */
+@media (max-width: 480px) {
+  /* Full-width buttons: one line every time. The fill is --cta-green, which
+     carries white at 4.7:1 at any size, so 16px is legal; the arrow is
+     decoration and gives its room back to the label. */
+  .btn.btn {
+    font-size: 1rem;
+    letter-spacing: 0;
+    padding: 1rem .75rem;
+    min-height: 3.4rem;
+    white-space: nowrap;
+  }
+  .band .btn .ico, .cta-break .btn .ico, .hero .btn .ico,
+  .estimate .btn .ico, .how .btn .ico { display: none; }
+  .masthead__act .btn.btn { min-height: 44px; padding: .7rem 1.1rem; font-size: .88rem; }
+  .masthead__act .btn .ico { display: inline; }
+
+  /* Hero: four lines instead of five */
+  .hero__h1 { font-size: clamp(2rem, 9.4vw, 2.5rem); line-height: 1.08; }
+  .hero__cta .btn { width: 100%; justify-content: center; }
+
+  /* Why us: icon beside the text, so four reasons fit in half the height */
+  .why__list { gap: 1.35rem; }
+  .why__item {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 1rem;
+    justify-items: start;
+    text-align: left;
+  }
+  .why__icon { grid-row: span 2; width: 3.5rem; height: 3.5rem; margin: 0; }
+  .why__icon svg { width: 1.6rem; height: 1.6rem; }
+  .why__item h3 { margin: .1rem 0 .25rem; }
+  .why__item p { max-width: none; }
+
+  /* Flooring seals: all three on one row */
+  .flooring__seals { flex-wrap: nowrap; gap: .5rem; justify-content: space-between; }
+  .seal { width: calc((100% - 1rem) / 3); padding: .5rem; }
+  .seal__ico { width: 1.1rem; height: 1.1rem; }
+  .seal__value { font-size: 1.15rem; }
+  .seal__label { font-size: .58rem; letter-spacing: .02em; }
+
+
+  /* How it works: tighter steps */
+  .how__steps { gap: .35rem; }
+  .how__step { padding: .8rem .9rem; gap: .85rem; }
+  .how__num { width: 2.2rem; height: 2.2rem; }
+
+  /* Footer: the flooring list in one column, no sideways scroll */
+  .foot__card--floor ul { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ==========================================================================
+   THE ONE AUTHORED MOMENT — hero entrance
+   ========================================================================== */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); filter: blur(7px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+.anim { animation: rise .95s cubic-bezier(.16, 1, .3, 1) var(--d, 0ms) both; }
+
+/* Soft section entrance (script.js adds .rv, then .is-in when in view) */
+.rv {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .8s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+  transition-delay: var(--rv-d, 0ms);
+}
+.rv.is-in { opacity: 1; transform: none; }
+
+/* Why-us entrance. script.js adds .is-staged only when motion is allowed and
+   .is-in once the section scrolls into view, so without JS nothing is hidden.
+   Title rises, the rule draws from the centre, boards are laid one at a time
+   from alternating sides, then the fascia and the button settle in. */
+.why.is-staged .why__h2,
+.why.is-staged .why__rule,
+.why.is-staged .why__item,
+.why.is-staged .why__cta { opacity: 0; }
+.why.is-staged .why__rule { transform: scaleX(0); }
+
+.why.is-in .why__h2   { animation: rise .9s cubic-bezier(.16, 1, .3, 1) both; }
+.why.is-in .why__rule { animation: why-draw .7s cubic-bezier(.65, 0, .35, 1) .25s both; }
+.why.is-in .why__item { animation: rise .8s cubic-bezier(.16, 1, .3, 1) both; }
+.why.is-in .why__item:nth-child(1) { animation-delay: .4s; }
+.why.is-in .why__item:nth-child(2) { animation-delay: .52s; }
+.why.is-in .why__item:nth-child(3) { animation-delay: .64s; }
+.why.is-in .why__item:nth-child(4) { animation-delay: .76s; }
+.why.is-in .why__cta   { animation: rise .8s cubic-bezier(.16, 1, .3, 1) .95s both; }
+
+@keyframes why-draw {
+  from { opacity: 1; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .anim { animation: none; }
+  .dock { transition: none; }
+  .work__grid img { transition: none; }
+  .btn { transition: background-color .2s; }
+  .btn:hover { transform: none; }
+}

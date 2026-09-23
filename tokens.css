@@ -1,0 +1,233 @@
+/* ==========================================================================
+   GOOSE CREEK — DESIGN TOKENS
+   Extraídos de https://goosecreekflooring.com/ (WordPress + OceanWP + Elementor)
+   Fonte: Elementor Kit #7, header #198/#210, conteúdo #6258
+   Data da extração: 2026-09-22
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------- CORES */
+  /* Marca */
+  --gc-navy:          #092C3D; /* Elementor "primary"   — títulos escuros, botão alternativo */
+  --gc-green:         #0BB751; /* Elementor "secondary" — hover de botão, estado ativo */
+  --gc-green-deep:    #1E8B4A; /* Elementor custom      — cor PRINCIPAL de CTA e eyebrow */
+  --gc-green-lime:    #44DD11; /* Elementor custom      — acento pontual */
+
+  /* Neutros */
+  --gc-ink:           #272727; /* Elementor "text" — corpo de texto e títulos de seção */
+  --gc-white:         #FFFFFF; /* Elementor "accent" — texto sobre fundo escuro/CTA */
+  --gc-surface:       #F7F7F7; /* fundo da barra do header e de seções alternadas */
+  --gc-surface-green: #EDF8ED; /* fundo verde-claro de blocos de destaque */
+
+  /* Secundária pontual (usada em 1 botão do site atual) */
+  --gc-blue:          #109BC5;
+  --gc-blue-hover:    #0585AC;
+
+  /* Papéis semânticos (use estes no site novo) */
+  --color-bg:            var(--gc-white);
+  --color-bg-alt:        var(--gc-surface);
+  --color-text:          var(--gc-ink);
+  --color-heading:       var(--gc-ink);
+  --color-heading-dark:  var(--gc-navy);
+  --color-on-dark:       var(--gc-white);
+  --color-eyebrow:       var(--gc-green-deep);
+  --color-cta:           var(--gc-green-deep);
+  --color-cta-hover:     var(--gc-green);
+  --color-cta-text:      var(--gc-white);
+  --color-link-hover:    var(--gc-green);
+
+  /* Gradientes (barra superior de contato e blocos de destaque) */
+  --gradient-bar:   linear-gradient(90deg,  var(--gc-green) 0%, var(--gc-green-deep) 100%);
+  --gradient-block: linear-gradient(219deg, var(--gc-green) 0%, var(--gc-green-deep) 100%);
+
+  /* ----------------------------------------------------------- TIPOGRAFIA */
+  /* O site carrega Poppins 100–900 (normal + itálico). Poppins é a fonte real:
+     aparece em ~49 das 68 declarações. O Kit ainda declara Roboto/Roboto Slab
+     como global, mas cada widget sobrescreve — Roboto é legado, não use. */
+  --font-sans:    "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-alt:     "Montserrat", var(--font-sans); /* uso residual, 6 ocorrências */
+
+  --fw-light:     300;
+  --fw-regular:   400;
+  --fw-medium:    500;
+  --fw-semibold:  600;  /* peso dominante do site */
+  --fw-bold:      700;  /* botões */
+  --fw-extrabold: 800;  /* H1 do hero */
+
+  /* Unitless, not `em`: as a length these freeze to a px value computed from
+     whatever font-size was in scope, so any later size change (a clamp stepping
+     down, a smaller variant) leaves the old leading behind. */
+  --lh-tight: 1.2;      /* todos os títulos */
+  --lh-body:  1.4;      /* corpo de texto */
+  --lh-flat:  1;        /* números / labels curtos */
+
+  /* Escala tipográfica — desktop (fallback) → mobile via clamp (<=767px) */
+  --fs-hero:     clamp(30px, 5.5vw, 44px);  /* H1 hero, 800, UPPERCASE */
+  --fs-hero-alt: clamp(30px, 5.5vw, 45px);  /* H1 alternativo, 600 */
+  --fs-h2:       clamp(22px, 4vw,   41px);  /* título de seção, 600 */
+  --fs-h3:       clamp(22px, 3.2vw, 31px);  /* subtítulo de bloco, 600 */
+  --fs-h4:       clamp(22px, 2.8vw, 28px);  /* título de card, 600 */
+  --fs-h5:       clamp(20px, 2.4vw, 26px);  /* título de card sobre foto, 600 */
+  --fs-subhero:  clamp(20px, 3vw,   25px);  /* linha de apoio do hero, 300, UPPERCASE */
+  --fs-btn:      19px;                      /* 700, UPPERCASE */
+  --fs-nav:      18px;                      /* 600 */
+  --fs-body:     16px;                      /* 400 */
+  --fs-small:    15px;
+  --fs-eyebrow:  clamp(14px, 1.6vw, 17px);  /* 600, UPPERCASE, cor verde */
+  --fs-caption:  14px;
+
+  /* ------------------------------------------------------------ ESPAÇAMENTO */
+  /* Escala real observada: 5 · 10 · 15 · 20 · 25 · 30 · 40 · 60 */
+  --space-1:  5px;
+  --space-2:  10px;
+  --space-3:  15px;
+  --space-4:  20px;
+  --space-5:  25px;
+  --space-6:  30px;
+  --space-7:  40px;
+  --space-8:  60px;   /* padding vertical padrão de seção (14 ocorrências) */
+
+  --section-py:        var(--space-8);   /* 60px topo e base */
+  --section-py-mobile: var(--space-7);   /* 40px */
+  --gutter:            var(--space-3);   /* 15px lateral no mobile */
+  --gap-tight:         var(--space-2);   /* 10px — gap dominante */
+  --gap-default:       var(--space-4);   /* 20px — widgets-spacing do Elementor */
+  --hero-py:           190px;            /* hero desktop; 127px variante secundária */
+
+  /* -------------------------------------------------------------- LAYOUT */
+  --container:      1140px;  /* largura de conteúdo do Kit */
+  --container-wide: 1242px;  /* barra de contato + header */
+  --bp-mobile:      767px;
+  --bp-tablet:      1024px;
+
+  /* --------------------------------------------------------------- RAIOS */
+  --radius-pill:  64px;  /* botões — forma dominante, 14 ocorrências */
+  --radius-round: 100px; /* toggle do menu mobile */
+  --radius-lg:    30px;
+  --radius-md:    20px;  /* cards */
+  --radius-sm:    10px;
+  --radius-xs:    5px;   /* dropdown do menu */
+  --radius-2xs:   4px;
+
+  /* ------------------------------------------------------------- SOMBRAS */
+  --shadow-sm:      0px 4px 4px  0px rgba(0, 0, 0, 0.22);   /* dropdown do menu */
+  --shadow-md:      0px 4px 10px 0px rgba(0, 0, 0, 0.34);
+  --shadow-card:    -18px 13px 55px 4px rgba(0, 0, 0, 0.12);
+  --shadow-lifted:  0px 15px 59px 0px rgba(0, 0, 0, 0.32);
+  --shadow-header:  0px -11px 35px 0px rgba(0, 0, 0, 0.11); /* header sticky */
+  --shadow-dramatic: 42px 18px 100px -22px rgba(0, 0, 0, 0.89);
+  --text-shadow-hero: 0px 0px 10px rgba(0, 0, 0, 0.3);      /* títulos sobre foto */
+
+  /* ------------------------------------------------------------ TRANSIÇÃO */
+  --transition: 0.3s;
+}
+
+/* ==========================================================================
+   COMPONENTES-BASE (reconstruídos a partir do site atual)
+   ========================================================================== */
+
+/* --- Botão primário: verde escuro, pílula, caixa alta ---------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);              /* 5px; 15px quando o botão tem ícone grande */
+  font-family: var(--font-sans);
+  font-size: var(--fs-btn);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-cta-text);
+  fill: var(--color-cta-text);
+  background-color: var(--color-cta);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: var(--space-3);          /* 15px em todos os lados no site atual */
+  transition: background-color var(--transition);
+  cursor: pointer;
+}
+.btn:hover,
+.btn:focus-visible { background-color: var(--color-cta-hover); }
+
+/* Variante escura (navy), mesmo hover verde */
+.btn--dark { background-color: var(--gc-navy); }
+
+/* Variante azul, retangular — única exceção do site atual */
+.btn--blue {
+  background-color: var(--gc-blue);
+  font-size: 17px;
+  border: 1px solid var(--gc-white);
+  border-radius: var(--radius-2xs);
+  padding: 13px 25px;
+}
+.btn--blue:hover { background-color: var(--gc-blue-hover); }
+
+/* --- Eyebrow: rótulo verde acima do título de seção ------------------------ */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  line-height: var(--lh-tight);
+  color: var(--color-eyebrow);
+}
+
+/* --- Títulos --------------------------------------------------------------- */
+h1, .h1 { font: var(--fw-extrabold) var(--fs-hero)/var(--lh-tight) var(--font-display); text-transform: uppercase; }
+h2, .h2 { font: var(--fw-semibold)  var(--fs-h2)/var(--lh-tight)   var(--font-display); color: var(--color-heading); }
+h3, .h3 { font: var(--fw-semibold)  var(--fs-h3)/var(--lh-tight)   var(--font-display); color: var(--color-heading); }
+h4, .h4 { font: var(--fw-semibold)  var(--fs-h4)/var(--lh-tight)   var(--font-display); color: var(--color-heading); }
+
+/* Título sobre imagem: branco + text-shadow */
+.on-image { color: var(--color-on-dark); text-shadow: var(--text-shadow-hero); }
+
+/* --- Corpo ----------------------------------------------------------------- */
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+/* --- Container ------------------------------------------------------------- */
+.container       { width: 100%; max-width: var(--container);      margin-inline: auto; padding-inline: var(--gutter); }
+.container--wide  { max-width: var(--container-wide); }
+
+/* --- Seção ----------------------------------------------------------------- */
+.section     { padding-block: var(--section-py); }
+.section--alt { background: var(--color-bg-alt); }
+
+@media (max-width: 767px) {
+  .section { padding-block: var(--section-py-mobile); }
+}
+
+/* --- Navegação ------------------------------------------------------------- */
+.nav a {
+  font-family: var(--font-sans);
+  font-size: var(--fs-nav);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+  padding: var(--space-1) var(--space-4);   /* 5px 20px */
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.nav a:hover,
+.nav a:focus-visible { color: var(--color-link-hover); }
+
+/* --- Barra de contato (topo) ----------------------------------------------- */
+.topbar {
+  background: var(--gradient-bar);
+  color: var(--color-on-dark);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+}
+
+/* --- Card ------------------------------------------------------------------ */
+.card {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+}
