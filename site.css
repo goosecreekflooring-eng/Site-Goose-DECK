@@ -1724,9 +1724,23 @@ a.topbar__item:hover, a.topbar__item:focus-visible { color: #C8ECD8; }
 .foot__contact-list { margin-bottom: 1rem; }
 .foot__contact-list a,
 .foot__places li { display: flex; align-items: center; gap: .5rem; color: #56646A; font-size: .98rem; }
-.foot__contact-list a { max-width: 100%; word-break: break-word; }
+.foot__contact-list a { max-width: 100%; }
 .foot__contact-list .ico,
 .foot__places .ico, .foot__tel .ico { color: var(--cta-green); flex: none; }
+
+/* Contact column: one rhythm for every row (phone, email, socials, towns).
+   The .foot__card--contact prefix beats `.foot__card ul { margin: 0 }`,
+   which was swallowing the space between the two lists. Icons sit on the
+   first line so a wrapped email still reads as one row. */
+.foot__card--contact .foot__tel { margin-bottom: .75rem; }
+.foot__card--contact .foot__contact-list,
+.foot__card--contact .foot__places { gap: .75rem; }
+.foot__card--contact .foot__contact-list { margin-bottom: .75rem; }
+.foot__card--contact .foot__contact-list a,
+.foot__card--contact .foot__places li { align-items: flex-start; gap: .6rem; line-height: 1.4; }
+.foot__card--contact .foot__contact-list .ico,
+.foot__card--contact .foot__places .ico { margin-top: .12em; }
+.foot__card--contact .foot__contact-list a span { overflow-wrap: anywhere; }
 
 .foot__base {
   background: var(--cta-green);
